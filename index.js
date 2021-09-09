@@ -13,11 +13,12 @@ function fetchItems() {
 
 
 function addItems(resp) {
-  
     resp.data.forEach(item => {
         addItemsToDom(item)
     })
 }
+
+
 function addItemsToDom(item) {
 
     itemList.innerHTML +=  `
@@ -26,7 +27,8 @@ function addItemsToDom(item) {
             $<span class = "price">${item.attributes.price}</span>
             <strong class = "name">${item.attributes.name}</strong>:
             <span class = "description">${item.attributes.description}</span>
-    </li>
+    </li>   
+            <button class = "delete" data-id = "${item.id}">Delete</button>
     </div>
     `
 }
@@ -57,10 +59,51 @@ function handleForm(e) {
     .then(resp => {
         addItemsToDom(resp.data)
     })
-    debugger
+    // debugger
     // itemForm.reset()
    
 }
+
+
+function deleteItem(id) {
+
+    // remove from db 
+
+
+    let configObj = {
+        method: 'DELETE',
+        headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json"
+        }
+    }
+
+    fetch(`http://localhost:3000/items/${id}`, configObj)
+    .then(res => res.json())
+    .then(json => {
+        alert(json.message)
+    })
+
+
+
+
+    // Delete from Dom 
+    let item = document.getElementById(`item-${id}`)
+    item.remove()
+    // debugger
+}
+
+
+
+function handlerClick(e) {
+    // debugger
+    if(e.target.className === "delete") {
+        let id = e.target.dataset.id
+        deleteItem(id)
+        // debugger;
+    }
+}
+
 
 
 
@@ -69,6 +112,7 @@ function handleForm(e) {
 document.addEventListener("DOMContentLoaded", function() {
     fetchItems()
     itemForm.addEventListener("submit", handleForm)
+    itemList.addEventListener("click", handlerClick)
     
 })
 
