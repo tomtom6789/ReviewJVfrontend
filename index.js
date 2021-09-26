@@ -4,41 +4,49 @@ const itemDescription = document.getElementById('item-description')
 const itemPrice = document.getElementById('item-price')
 const itemForm = document.getElementById('item-form')
 
-
-function fetchItems() {
-    fetch('http://localhost:3000/items')
-    .then(res => res.json())
-    .then(addItems)
-}
+const itemsAdapter = new ItemsAdapter
+// const item =  new Item 
+// const item = new Item 
+// const itemList = item.itemList
 
 
-function addItems(resp) {
-    resp.data.forEach(item => {
-        addItemsToDom(item)
-    })
-}
+
+// function fetchItems() {
+//     fetch('http://localhost:3000/items')
+//     .then(res => res.json())
+//     .then(addItems)
+// }
 
 
-function addItemsToDom(item) {
+// function addItems(resp) {
+//     resp.data.forEach(item => {
+//         addItemsToDom(item)
+//     })
+// }
 
-    itemList.innerHTML +=  `
-    <div id="item-${item.id}">
-    <li>
-            $<span class = "price">${item.attributes.price}</span>
-            <strong class = "name">${item.attributes.name}</strong>:
-            <span class = "description">${item.attributes.description}</span>
-    </li>   
-            <button class = "delete" data-id = "${item.id}">Delete</button>
-            <button class = "update" data-id = "${item.id}">Update</button>
-    </div>
-    `
-}
+
+// function addItemsToDom(item) {
+
+//     itemList.innerHTML +=  `
+//     <div id="item-${item.id}">
+    // <li>
+    //         $<span class = "price">${item.attributes.price}</span>
+    //         <strong class = "name">${item.attributes.name}</strong>:
+    //         <span class = "description">${item.attributes.description}</span>
+    // </li>   
+    //         <button class = "delete" data-id = "${item.id}">Delete</button>
+    //         <button class = "update" data-id = "${item.id}">Update</button>
+//     </div>
+//     `
+// }
 
 
 
 function handleForm(e) {
  
     e.preventDefault()
+
+
     let newObject = {
         name: itemName.value, 
         description: itemDescription.value,
@@ -120,68 +128,68 @@ function addUpdatedItemField(id){
 }
 
 
-function sendPatchRequest(id) {
+// function sendPatchRequest(id) {
 
-    let updatedPrice = document.getElementById(`update-price-${id}`)
-    let updatedName = document.getElementById(`update-name-${id}`)
-    let updatedDescription = document.getElementById(`update-description-${id}`) 
+//     let updatedPrice = document.getElementById(`update-price-${id}`)
+//     let updatedName = document.getElementById(`update-name-${id}`)
+//     let updatedDescription = document.getElementById(`update-description-${id}`) 
     
-    let newItemObject = {
-        name: updatedName.value,
-        price: updatedPrice.value,
-        description: updatedDescription.value
-    }
+//     let newItemObject = {
+//         name: updatedName.value,
+//         price: updatedPrice.value,
+//         description: updatedDescription.value
+//     }
 
-    let configObj = {
-        method: "PATCH", 
-        headers: {
-            "Content-Type": "application/json",
-            "Accepts": "application/json"
-        },
-        body: JSON.stringify(newItemObject)
-    }
-
-
-    fetch(`http://localhost:3000/items/${id}`, configObj) 
-        .then(resp => resp.json())
-        .then(resp => updateItemOnDom(resp.data))
+//     let configObj = {
+//         method: "PATCH", 
+//         headers: {
+//             "Content-Type": "application/json",
+//             "Accepts": "application/json"
+//         },
+//         body: JSON.stringify(newItemObject)
+//     }
 
 
-
-     // Remove form   
-    let form = document.getElementById(`update-form-${id}`)
-    form.remove()
-
-}
+//     fetch(`http://localhost:3000/items/${id}`, configObj) 
+//         .then(resp => resp.json())
+//         .then(resp => updateItemOnDom(resp.data))
 
 
-function updateItemOnDom(item) {
-    let liItem  = document.querySelector(`#item-${item.id} li`)
-    liItem.querySelector('.price').innerText = item.attributes.price
-    liItem.querySelector('.name').innerText = item.attributes.name 
-    liItem.querySelector('.description').innerText = item.attributes.description
 
-    // debugger;
+//      // Remove form   
+//     let form = document.getElementById(`update-form-${id}`)
+//     form.remove()
 
-}
+// }
 
-function handlerClick(e) {
-    if(e.target.className === "delete") {
-        let id = e.target.dataset.id
-        deleteItem(id)
-    } else if (e.target.className === "update") {
-        let itemId = e.target.dataset.id
-        e.target.className = "save"
-        e.target.innerText = "Save"
-        addUpdatedItemField(itemId)
-    } else if (e.target.className === "save") {
-        let id = e.target.dataset.id 
-        e.target.className = "update"
-        e.target.innerText = "Update"
-        sendPatchRequest(id)
-    }
+
+// function updateItemOnDom(item) {
+//     let liItem  = document.querySelector(`#item-${item.id} li`)
+//     liItem.querySelector('.price').innerText = item.attributes.price
+//     liItem.querySelector('.name').innerText = item.attributes.name 
+//     liItem.querySelector('.description').innerText = item.attributes.description
+
+//     // debugger;
+
+// }
+
+// function handlerClick(e) {
+//     if(e.target.className === "delete") {
+//         let id = e.target.dataset.id
+//         deleteItem(id)
+//     } else if (e.target.className === "update") {
+//         let itemId = e.target.dataset.id
+//         e.target.className = "save"
+//         e.target.innerText = "Save"
+//         addUpdatedItemField(itemId)
+//     } else if (e.target.className === "save") {
+//         let id = e.target.dataset.id 
+//         e.target.className = "update"
+//         e.target.innerText = "Update"
+//         itemsAdapter.sendPatchRequest(id)
+//     }
  
-}
+// }
 
 
 
@@ -189,12 +197,12 @@ function handlerClick(e) {
 
 
 document.addEventListener("DOMContentLoaded", function() {
-    fetchItems()
+    itemsAdapter.fetchItems()
     itemForm.addEventListener("submit", handleForm)
-    itemList.addEventListener("click", handlerClick)
-
-    
+    // itemList.addEventListener("click", handlerClick)
 })
+
+
 
 
 
