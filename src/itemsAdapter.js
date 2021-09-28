@@ -4,25 +4,27 @@ class ItemsAdapter {
     }
 
 
-    // Get 
+    // GET
     fetchItems() {
         fetch(this.baseURl)
         .then(resp => resp.json()) 
         .then(resp => {
             resp.data.forEach((el) => {
-                let item = new Item(el.attributes)
-                  item.addItemToDom()
+                 new Item(el.attributes)
+                //   item.addItemToDom()
+                // Category.displayItems()
             })
         })
     }
 
 
 
-    // Update
+    // UPDATE
     sendPatchRequest(itemId){
         const price = document.getElementById(`update-price-${itemId}`).value
         const description = document.getElementById(`update-description-${itemId}`).value
         const name = document.getElementById(`update-name-${itemId}`).value
+
 
         let itemObj = {
             name,
@@ -55,6 +57,102 @@ class ItemsAdapter {
 
 
 
+    // CREATE 
+    handleForm(e) {
+     
+
+        const name = document.getElementById('item-name').value
+        const description = document.getElementById('item-description').value 
+        const price = document.getElementById('item-price').value
+        const category_name = document.getElementById('item-category').value
+
+
+
+
+
+    let newObject = {
+        item:  {name,  
+                description, 
+                price, 
+                category_name
+        }
+    }
+
+
+    // debugger;
+
+    e.preventDefault()
+
+    let configObj = {
+        method: 'POST',
+        headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json"
+        },
+        body: JSON.stringify(newObject)
+    }
+
+
+    fetch('http://localhost:3000/items', configObj)
+    .then(resp => resp.json())
+    .then(resp => {
+
+        let category = Category.find(resp.data.attributes.category_id)
+        if(!category){
+          category = new Category({
+            id: resp.data.attributes.category_id,
+            name: resp.data.attributes.category_name
+          }),
+          category.attachToDom();
+        }
+     
+
+        
+
+        
+    })
+
+
+
+    let form = document.getElementById(`item-form`)
+    form.reset()
+    // debugger
+    // itemForm.reset()
+   
+}
+
+
+
+
+    // DELETE 
+    deleteItem(id) {
+
+    // remove from db 
+
+
+    let configObj = {
+        method: 'DELETE',
+        headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json"
+        }
+    }
+
+    fetch(`http://localhost:3000/items/${id}`, configObj)
+    .then(res => res.json())
+    .then(json => {
+        // debugger;
+        alert(json.message)
+    })
+
+
+
+
+    // Delete from Dom 
+    let item = document.getElementById(`item-${id}`)
+    item.remove()
+    // debugger
+}
         
 
 
@@ -62,3 +160,7 @@ class ItemsAdapter {
 
 }
 
+
+
+
+   

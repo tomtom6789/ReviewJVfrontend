@@ -1,106 +1,102 @@
-const itemList = document.getElementById('item-list')
-const itemName = document.getElementById('item-name')
-const itemDescription = document.getElementById('item-description')
-const itemPrice = document.getElementById('item-price')
-const itemForm = document.getElementById('item-form')
 
 const itemsAdapter = new ItemsAdapter
-// const item =  new Item 
-// const item = new Item 
-// const itemList = item.itemList
+const categoriesAdapter = new CategoriesAdapter
+let currentCategory 
 
 
 
-// function fetchItems() {
-//     fetch('http://localhost:3000/items')
-//     .then(res => res.json())
-//     .then(addItems)
-// }
 
 
-// function addItems(resp) {
-//     resp.data.forEach(item => {
-//         addItemsToDom(item)
-//     })
-// }
+// // function fetchItems() {
+// //     fetch('http://localhost:3000/items')
+// //     .then(res => res.json())
+// //     .then(addItems)
+// // }
 
 
-// function addItemsToDom(item) {
-
-//     itemList.innerHTML +=  `
-//     <div id="item-${item.id}">
-    // <li>
-    //         $<span class = "price">${item.attributes.price}</span>
-    //         <strong class = "name">${item.attributes.name}</strong>:
-    //         <span class = "description">${item.attributes.description}</span>
-    // </li>   
-    //         <button class = "delete" data-id = "${item.id}">Delete</button>
-    //         <button class = "update" data-id = "${item.id}">Update</button>
-//     </div>
-//     `
-// }
+// // function addItems(resp) {
+// //     resp.data.forEach(item => {
+// //         addItemsToDom(item)
+// //     })
+// // }
 
 
+// // function addItemsToDom(item) {
 
-function handleForm(e) {
+// //     itemList.innerHTML +=  `
+// //     <div id="item-${item.id}">
+//     // <li>
+//     //         $<span class = "price">${item.attributes.price}</span>
+//     //         <strong class = "name">${item.attributes.name}</strong>:
+//     //         <span class = "description">${item.attributes.description}</span>
+//     // </li>   
+//     //         <button class = "delete" data-id = "${item.id}">Delete</button>
+//     //         <button class = "update" data-id = "${item.id}">Update</button>
+// //     </div>
+// //     `
+// // }
+
+
+
+// // function handleForm(e) {
  
-    e.preventDefault()
+// //     e.preventDefault()
 
 
-    let newObject = {
-        name: itemName.value, 
-        description: itemDescription.value,
-        price: itemPrice.value
-    }
+// //     let newObject = {
+// //         name: itemName.value, 
+// //         description: itemDescription.value,
+// //         price: itemPrice.value
+// //     }
 
-    let configObj = {
-        method: 'POST',
-        headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json"
-        },
-        body: JSON.stringify(newObject)
-    }
+// //     let configObj = {
+// //         method: 'POST',
+// //         headers: {
+// //             "Content-Type": "application/json",
+// //             Accept: "application/json"
+// //         },
+// //         body: JSON.stringify(newObject)
+// //     }
 
 
-    fetch('http://localhost:3000/items', configObj)
-    .then(resp => resp.json())
-    .then(resp => {
-        addItemsToDom(resp.data)
-    })
-    // debugger
-    // itemForm.reset()
+// //     fetch('http://localhost:3000/items', configObj)
+// //     .then(resp => resp.json())
+// //     .then(resp => {
+// //         addItemsToDom(resp.data)
+// //     })
+// //     // debugger
+// //     // itemForm.reset()
    
-}
+// // }
 
 
-function deleteItem(id) {
+// // function deleteItem(id) {
 
-    // remove from db 
-
-
-    let configObj = {
-        method: 'DELETE',
-        headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json"
-        }
-    }
-
-    fetch(`http://localhost:3000/items/${id}`, configObj)
-    .then(res => res.json())
-    .then(json => {
-        alert(json.message)
-    })
+// //     // remove from db 
 
 
+// //     let configObj = {
+// //         method: 'DELETE',
+// //         headers: {
+// //             "Content-Type": "application/json",
+// //             Accept: "application/json"
+// //         }
+// //     }
+
+// //     fetch(`http://localhost:3000/items/${id}`, configObj)
+// //     .then(res => res.json())
+// //     .then(json => {
+// //         alert(json.message)
+// //     })
 
 
-    // Delete from Dom 
-    let item = document.getElementById(`item-${id}`)
-    item.remove()
-    // debugger
-}
+
+
+// //     // Delete from Dom 
+// //     let item = document.getElementById(`item-${id}`)
+// //     item.remove()
+// //     // debugger
+// // }
 
 
 function addUpdatedItemField(id){
@@ -128,81 +124,92 @@ function addUpdatedItemField(id){
 }
 
 
-// function sendPatchRequest(id) {
+// // function sendPatchRequest(id) {
 
-//     let updatedPrice = document.getElementById(`update-price-${id}`)
-//     let updatedName = document.getElementById(`update-name-${id}`)
-//     let updatedDescription = document.getElementById(`update-description-${id}`) 
+// //     let updatedPrice = document.getElementById(`update-price-${id}`)
+// //     let updatedName = document.getElementById(`update-name-${id}`)
+// //     let updatedDescription = document.getElementById(`update-description-${id}`) 
     
-//     let newItemObject = {
-//         name: updatedName.value,
-//         price: updatedPrice.value,
-//         description: updatedDescription.value
-//     }
+// //     let newItemObject = {
+// //         name: updatedName.value,
+// //         price: updatedPrice.value,
+// //         description: updatedDescription.value
+// //     }
 
-//     let configObj = {
-//         method: "PATCH", 
-//         headers: {
-//             "Content-Type": "application/json",
-//             "Accepts": "application/json"
-//         },
-//         body: JSON.stringify(newItemObject)
-//     }
-
-
-//     fetch(`http://localhost:3000/items/${id}`, configObj) 
-//         .then(resp => resp.json())
-//         .then(resp => updateItemOnDom(resp.data))
+// //     let configObj = {
+// //         method: "PATCH", 
+// //         headers: {
+// //             "Content-Type": "application/json",
+// //             "Accepts": "application/json"
+// //         },
+// //         body: JSON.stringify(newItemObject)
+// //     }
 
 
-
-//      // Remove form   
-//     let form = document.getElementById(`update-form-${id}`)
-//     form.remove()
-
-// }
+// //     fetch(`http://localhost:3000/items/${id}`, configObj) 
+// //         .then(resp => resp.json())
+// //         .then(resp => updateItemOnDom(resp.data))
 
 
-// function updateItemOnDom(item) {
-//     let liItem  = document.querySelector(`#item-${item.id} li`)
-//     liItem.querySelector('.price').innerText = item.attributes.price
-//     liItem.querySelector('.name').innerText = item.attributes.name 
-//     liItem.querySelector('.description').innerText = item.attributes.description
 
-//     // debugger;
+// //      // Remove form   
+// //     let form = document.getElementById(`update-form-${id}`)
+// //     form.remove()
 
-// }
+// // }
 
-// function handlerClick(e) {
-//     if(e.target.className === "delete") {
-//         let id = e.target.dataset.id
-//         deleteItem(id)
-//     } else if (e.target.className === "update") {
-//         let itemId = e.target.dataset.id
-//         e.target.className = "save"
-//         e.target.innerText = "Save"
-//         addUpdatedItemField(itemId)
-//     } else if (e.target.className === "save") {
-//         let id = e.target.dataset.id 
-//         e.target.className = "update"
-//         e.target.innerText = "Update"
-//         itemsAdapter.sendPatchRequest(id)
-//     }
+
+// // function updateItemOnDom(item) {
+// //     let liItem  = document.querySelector(`#item-${item.id} li`)
+// //     liItem.querySelector('.price').innerText = item.attributes.price
+// //     liItem.querySelector('.name').innerText = item.attributes.name 
+// //     liItem.querySelector('.description').innerText = item.attributes.description
+
+// //     // debugger;
+
+// // }
+
+// // function handlerClick(e) {
+// //     if(e.target.className === "delete") {
+// //         let id = e.target.dataset.id
+// //         deleteItem(id)
+// //     } else if (e.target.className === "update") {
+// //         let itemId = e.target.dataset.id
+// //         e.target.className = "save"
+// //         e.target.innerText = "Save"
+// //         addUpdatedItemField(itemId)
+// //     } else if (e.target.className === "save") {
+// //         let id = e.target.dataset.id 
+// //         e.target.className = "update"
+// //         e.target.innerText = "Update"
+// //         itemsAdapter.sendPatchRequest(id)
+// //     }
  
-// }
+// // }
 
 
 
+function hideBtnLoadForm(e) {
+    // debugger;
+    e.target.hidden = true
+    const newForm = document.getElementById('new-form-container')
+    newForm.hidden = false 
 
+}
 
 
 document.addEventListener("DOMContentLoaded", function() {
+    categoriesAdapter.fetchCategories()
     itemsAdapter.fetchItems()
-    itemForm.addEventListener("submit", handleForm)
-    // itemList.addEventListener("click", handlerClick)
+
+    const itemForm = document.getElementById('item-form')
+    itemForm.addEventListener("submit", itemsAdapter.handleForm)
+
+    const newFormBtn = document.getElementById('new-form-btn')
+    newFormBtn.addEventListener('click', hideBtnLoadForm)
+
+ 
 })
-
-
 
 
 
