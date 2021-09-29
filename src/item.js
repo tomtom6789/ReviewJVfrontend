@@ -30,6 +30,10 @@ class Item{
     }
 
 
+    static findById(id) {
+        return Item.all.find((i) => i.id == id)
+    }
+
     addEventListener() {
         this.element.addEventListener("click", this.handlerClick)
     }
@@ -46,11 +50,12 @@ class Item{
         if(e.target.className === "delete") {
             let id = e.target.dataset.id
             itemsAdapter.deleteItem(id)
+            // this.element.remove()
         } else if (e.target.className === "update") {
             let itemId = e.target.dataset.id
             e.target.className = "save"
             e.target.innerText = "Save"
-            addUpdatedItemField(itemId)
+            this.addUpdatedItemField(itemId)
         } else if (e.target.className === "save") {
             let id = e.target.dataset.id 
             e.target.className = "update"
@@ -82,6 +87,28 @@ class Item{
             this.fullRender()
         
     }
+
+
+
+    addUpdatedItemField(id){
+
+        let item = Item.findById(id)
+
+
+    let updateForm = `
+    <input type="number" value="${item.price}" name="price" id="update-price-${id}">
+    <input type="text" name="name" value="${item.name}" id="update-name-${id}">
+    <input type="text" name="description" value="${id.description}" id="update-description-${id}">
+    `
+
+
+    let formDiv = document.createElement('div')
+        formDiv.id = `update-form-${id}`
+        formDiv.innerHTML = updateForm
+        item.element.querySelector('li').append(formDiv)
+        // debugger
+
+}
 
 
 

@@ -1,4 +1,4 @@
-
+let itemForm = document.getElementById(`item-form`)
 const itemsAdapter = new ItemsAdapter
 const categoriesAdapter = new CategoriesAdapter
 let currentCategory 
@@ -99,29 +99,29 @@ let currentCategory
 // // }
 
 
-function addUpdatedItemField(id){
+// function addUpdatedItemField(id){
 
-    let item = document.querySelector(`#item-${id} li`)
-    let name = item.querySelector('.name').innerText
-    let description = item.querySelector('.description').innerText
-    let price = item.querySelector('.price').innerText
-
-
-
-    let updateForm = `
-    <input type="number" value="${price}" name="price" id="update-price-${id}">
-    <input type="text" name="name" value="${name}" id="update-name-${id}">
-    <input type="text" name="description" value="${description}" id="update-description-${id}">
-    `
+//     let item = document.querySelector(`#item-${id} li`)
+//     let name = item.querySelector('.name').innerText
+//     let description = item.querySelector('.description').innerText
+//     let price = item.querySelector('.price').innerText
 
 
-    let formDiv = document.createElement('div')
-        formDiv.id = `update-form-${id}`
-        formDiv.innerHTML = updateForm
-        item.append(formDiv)    
-        // debugger
 
-}
+//     let updateForm = `
+//     <input type="number" value="${price}" name="price" id="update-price-${id}">
+//     <input type="text" name="name" value="${name}" id="update-name-${id}">
+//     <input type="text" name="description" value="${description}" id="update-description-${id}">
+//     `
+
+
+//     let formDiv = document.createElement('div')
+//         formDiv.id = `update-form-${id}`
+//         formDiv.innerHTML = updateForm
+//         item.append(formDiv)    
+//         // debugger
+
+// }
 
 
 // // function sendPatchRequest(id) {
@@ -192,6 +192,7 @@ function addUpdatedItemField(id){
 function hideBtnLoadForm(e) {
     // debugger;
     e.target.hidden = true
+    // debugger;
     const newForm = document.getElementById('new-form-container')
     newForm.hidden = false 
 

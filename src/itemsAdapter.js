@@ -59,15 +59,10 @@ class ItemsAdapter {
 
     // CREATE 
     handleForm(e) {
-     
-
         const name = document.getElementById('item-name').value
         const description = document.getElementById('item-description').value 
         const price = document.getElementById('item-price').value
         const category_name = document.getElementById('item-category').value
-
-
-
 
 
     let newObject = {
@@ -96,28 +91,33 @@ class ItemsAdapter {
     fetch('http://localhost:3000/items', configObj)
     .then(resp => resp.json())
     .then(resp => {
+          // find the matching category
+       let category =  Category.find(resp.data.attributes.category_id)
 
-        let category = Category.find(resp.data.attributes.category_id)
-        if(!category){
-          category = new Category({
+
+       // add and attach category if it is exist
+       if(!category) {
+         let category = new Category({
             id: resp.data.attributes.category_id,
             name: resp.data.attributes.category_name
-          }),
-          category.attachToDom();
+         })
+         category.attachToDom()
+    
+       }
+
+       //add to dom if category is displayed
+       let item = new Item(resp.data.attributes)
+        if(!!currentCategory && currentCategory.id == item.category_id){
+          item.attachToDom()
         }
-     
-
-        
-
-        
     })
 
+    itemForm.reset()
+    let newForm = document.getElementById(`new-form-container`)
+    newForm.hidden = true;
+    let formButton = document.getElementById(`new-form-btn`)
+    formButton.hidden = false;
 
-
-    let form = document.getElementById(`item-form`)
-    form.reset()
-    // debugger
-    // itemForm.reset()
    
 }
 
@@ -126,10 +126,7 @@ class ItemsAdapter {
 
     // DELETE 
     deleteItem(id) {
-
-    // remove from db 
-
-
+    // remove from db
     let configObj = {
         method: 'DELETE',
         headers: {

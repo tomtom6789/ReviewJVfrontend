@@ -5,6 +5,7 @@ class Category {
     constructor({id, name}) {
         this.id = id 
         this.name  = name 
+        this.sorted = false 
 
 
         this.element = document.createElement("li")
@@ -16,10 +17,20 @@ class Category {
         Category.all.push(this)
     }
 
-
+    
     static find(id) {
-        return Category.all.find(cat => cat.id == id)
+        Category.all.find(cat => cat.id == id)
     }
+
+
+    sortedItems() {
+        return this.items().sort(function(a,b){
+            if(a.name.toLowerCase() < b.name.toLowerCase()) return -1;
+            if(a.name.toLowerCase() > b.name.toLowerCase()) return 1;
+            return 0;
+          })
+    }
+
 
     items(){
         return Item.all.filter((item) => item.category_id == this.id)
@@ -48,11 +59,32 @@ class Category {
 
     displayItems = () => {
 
-        document.getElementById("item-list").innerHTML = ``
+        currentCategory = this 
+        const itemList = document.getElementById("item-list")
+        itemList.innerHTML = ``
 
-        this.items().forEach((i) => {
+        
+        let items = this.sorted ? this.sortedItems() : this.items()
+            items.forEach((i) => {
             i.attachToDom()
         })
+
+
+        const sortBtn = document.createElement("button")
+        sortBtn.id = `sort-${this.id}`
+        sortBtn.textContent = "Sort"
+        itemList.append(sortBtn)
+        sortBtn.addEventListener("click", (e) =>{
+            // debugger;
+            this.sorted = !this.sorted
+            this.displayItems()
+        })
+
+    
+
+
+
+
     }
 
 
